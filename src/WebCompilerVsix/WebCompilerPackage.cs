@@ -95,21 +95,21 @@ namespace WebCompilerVsix
             WebCompiler.CompilerService.Initialized += (s, e) => { StatusText("Done installing the web compilers"); };
 
             // Delay execution until VS is idle.
-            _dispatcher.BeginInvoke(new Action(() =>
-            {
+            _ = _dispatcher.BeginInvoke(new Action(() =>
+              {
                 // Then execute in a background thread.
                 System.Threading.ThreadPool.QueueUserWorkItem((o) =>
-                {
-                    try
-                    {
-                        WebCompiler.CompilerService.Initialize();
-                    }
-                    catch (Exception ex)
-                    {
-                        Logger.Log(ex);
-                    }
-                });
-            }), DispatcherPriority.ApplicationIdle, null);
+                  {
+                      try
+                      {
+                          WebCompiler.CompilerService.Initialize();
+                      }
+                      catch (Exception ex)
+                      {
+                          Logger.Log(ex);
+                      }
+                  });
+              }), DispatcherPriority.ApplicationIdle, null);
         }
 
         public static void StatusText(string message)
